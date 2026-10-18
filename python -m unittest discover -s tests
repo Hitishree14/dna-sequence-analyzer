@@ -8,10 +8,10 @@ PROJECT_FOLDER = Path(__file__).resolve().parents[1]
 PROGRAM = PROJECT_FOLDER / "dna_analyzer.py"
 
 
-def run_analyzer(sequence):
+def run_analyzer(user_input):
     return subprocess.run(
         [sys.executable, str(PROGRAM)],
-        input=sequence + "\n",
+        input=user_input + "\n",
         capture_output=True,
         text=True
     )
@@ -20,24 +20,38 @@ def run_analyzer(sequence):
 class TestDNAAnalyzer(unittest.TestCase):
 
     def test_valid_dna_sequence(self):
-        result = run_analyzer("ATGCGTAA")
+        result = run_analyzer("1\nATGCGTAA")
         self.assertIn("Sequence length: 8", result.stdout)
         self.assertIn("GC content: 37.50%", result.stdout)
         self.assertIn("RNA sequence: AUGCGUAA", result.stdout)
         self.assertIn("Reverse complement: TTACGCAT", result.stdout)
 
     def test_invalid_dna_sequence(self):
-        result = run_analyzer("ATGX123")
-        self.assertIn("Error: Only A, T, G and C are allowed.", result.stdout)
+        result = run_analyzer("1\nATGX123")
+        self.assertIn(
+            "Error: Only A, T, G and C are allowed.",
+            result.stdout
+        )
 
     def test_lowercase_sequence(self):
-        result = run_analyzer("atgc")
+        result = run_analyzer("1\natgc")
         self.assertIn("DNA sequence: ATGC", result.stdout)
         self.assertIn("Sequence length: 4", result.stdout)
 
     def test_empty_sequence(self):
-        result = run_analyzer("")
-        self.assertIn("Error: DNA sequence cannot be empty.", result.stdout)
+        result = run_analyzer("1\n")
+        self.assertIn(
+            "Error: DNA sequence cannot be empty.",
+            result.stdout
+        )
+
+    def test_sample_file_exists(self):
+        sample_file = PROJECT_FOLDER / "examples" / "sample_dna.txt"
+        self.assertTrue(sample_file.exists())
+
+        sequence = sample_file.read_text(encoding="utf-8").strip()
+        self.assertEqual(len(sequence), 28)
+        self.assertTrue(set(sequence.upper()).issubset(set("ATGC")))
 
 
 if __name__ == "__main__":
