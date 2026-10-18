@@ -1,57 +1,62 @@
 
 def analyze_dna(sequence):
-    # Clean the sequence
-    sequence = sequence.upper().replace(" ", "")
+    """Analyze a DNA sequence and return its properties."""
 
-    # Check that the sequence is valid
+    sequence = "".join(sequence.split()).upper()
+
     if not sequence:
-        print("Error: DNA sequence cannot be empty.")
-        return
+        raise ValueError("DNA sequence cannot be empty.")
 
-    valid_bases = "ATGC"
+    valid_bases = set("ATGC")
 
-    for base in sequence:
-        if base not in valid_bases:
-            print("Error: Invalid DNA sequence.")
-            print("Only A, T, G and C are allowed.")
-            return
+    if any(base not in valid_bases for base in sequence):
+        raise ValueError("Only A, T, G and C are allowed.")
 
-    # Calculate sequence length
-    length = len(sequence)
-
-    # Count each nucleotide
     count_A = sequence.count("A")
     count_T = sequence.count("T")
     count_G = sequence.count("G")
     count_C = sequence.count("C")
 
-    # Calculate GC content
-    gc_content = ((count_G + count_C) / length) * 100
+    gc_content = ((count_G + count_C) / len(sequence)) * 100
 
-    # Transcribe DNA into RNA
     rna = sequence.replace("T", "U")
 
-    # Generate reverse complement
     complement_table = str.maketrans("ATGC", "TACG")
-    reverse_complement = sequence.translate(
-        complement_table
-    )[::-1]
+    reverse_complement = sequence.translate(complement_table)[::-1]
 
-    # Display results
-    print("\n--- DNA Sequence Analysis ---")
-    print("DNA sequence:", sequence)
-    print("Sequence length:", length)
-    print("A count:", count_A)
-    print("T count:", count_T)
-    print("G count:", count_G)
-    print("C count:", count_C)
-    print(f"GC content: {gc_content:.2f}%")
-    print("RNA sequence:", rna)
-    print("Reverse complement:", reverse_complement)
+    return {
+        "sequence": sequence,
+        "length": len(sequence),
+        "A": count_A,
+        "T": count_T,
+        "G": count_G,
+        "C": count_C,
+        "GC_content": round(gc_content, 2),
+        "RNA": rna,
+        "reverse_complement": reverse_complement,
+    }
 
 
-# Get sequence from the user
-dna = input("Enter a DNA sequence: ")
+def main():
+    dna = input("Enter a DNA sequence: ")
 
-# Analyze the sequence
-analyze_dna(dna)
+    try:
+        results = analyze_dna(dna)
+
+        print("\n--- DNA Sequence Analysis ---")
+        print("DNA sequence:", results["sequence"])
+        print("Sequence length:", results["length"])
+        print("A count:", results["A"])
+        print("T count:", results["T"])
+        print("G count:", results["G"])
+        print("C count:", results["C"])
+        print(f'GC content: {results["GC_content"]:.2f}%')
+        print("RNA sequence:", results["RNA"])
+        print("Reverse complement:", results["reverse_complement"])
+
+    except ValueError as error:
+        print("Error:", error)
+
+
+if __name__ == "__main__":
+    main()
