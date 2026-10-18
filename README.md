@@ -48,6 +48,12 @@ python dna_analyzer.py
 
 ## Example
 
+### Sample Dataset
+
+The repository includes a sample DNA sequence at `examples/sample_dna.txt`.
+
+This is synthetic example data created for testing and learning. You can copy the sequence into the program when prompted to explore its nucleotide composition, GC content, RNA-like sequence and reverse complement.
+
 ### Input
 
 ```text
