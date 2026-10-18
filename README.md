@@ -1,74 +1,20 @@
 
-# DNA Sequence Analyzer
+## Biological Concepts
 
-A beginner-friendly bioinformatics project built with Python to analyze DNA sequences.
+### 1. Nucleotide Composition
+DNA contains four nitrogenous bases: adenine (A), thymine (T), guanine (G) and cytosine (C). This tool counts each base in a DNA sequence.
 
-## Features
+### 2. GC Content
+GC content is the percentage of bases in a DNA sequence that are guanine or cytosine.
 
-- Validates DNA sequences
-- Calculates sequence length
-- Counts adenine (A), thymine (T), guanine (G) and cytosine (C)
-- Calculates GC content as a percentage
-- Transcribes a DNA coding strand into RNA
-- Generates the reverse complement of a DNA sequence
-- Handles empty and invalid input
+Formula:
 
-## Technologies Used
+GC content (%) = [(G + C) / Total sequence length] × 100
 
-- Python 3
-- GitHub
+GC content is useful in sequence characterization. Its interpretation depends on the organism and genomic region.
 
-## How to Run
+### 3. DNA Transcription
+During transcription, RNA is produced from a DNA template. This project converts T to U to represent an RNA-like sequence from the input DNA's coding strand, assuming it is written in the 5′ to 3′ direction. This is a simplified representation, not a full transcription simulation.
 
-1. Install Python 3.
-2. Download or clone this repository.
-3. Open a terminal in the project folder.
-4. Run:
-
-   ```bash
-   python dna_analyzer.py
-   ```
-
-5. Enter a DNA sequence using A, T, G and C.
-
-## Example
-
-Input:
-
-```text
-ATGCGTAA
-```
-
-Expected results:
-
-```text
-Sequence length: 8
-A count: 3
-T count: 2
-G count: 2
-C count: 1
-GC content: 37.50%
-RNA sequence: AUGCGUAA
-Reverse complement: TTACGCAT
-```
-
-## What I Learned
-
-- Basic Python programming
-- String manipulation
-- Loops and conditional statements
-- DNA nucleotide composition
-- GC content calculation
-- DNA transcription and complementary sequences
-- Input validation
-
-## Future Improvements
-
-- Read sequences from FASTA files
-- Add a graphical user interface
-- Analyze multiple DNA sequences
-- Add automated tests
-
-## Author
-
-Biotechnology undergraduate learning Python and bioinformatics.
+### 4. Reverse Complement
+DNA strands are complementary: A pairs with T and G pairs with C. The reverse complement replaces each base with its complement and reverses the sequence. It is useful when examining DNA sequences in opposite orientations.
