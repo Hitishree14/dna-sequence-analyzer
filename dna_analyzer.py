@@ -1,4 +1,7 @@
 
+from pathlib import Path
+
+
 def analyze_dna(sequence):
     """Analyze a DNA sequence and return its properties."""
 
@@ -18,7 +21,6 @@ def analyze_dna(sequence):
     count_C = sequence.count("C")
 
     gc_content = ((count_G + count_C) / len(sequence)) * 100
-
     rna = sequence.replace("T", "U")
 
     complement_table = str.maketrans("ATGC", "TACG")
@@ -38,9 +40,26 @@ def analyze_dna(sequence):
 
 
 def main():
-    dna = input("Enter a DNA sequence: ")
+    print("DNA Sequence Analyzer")
+    print("1. Enter a DNA sequence")
+    print("2. Read a sequence from a text file")
+
+    choice = input("Choose 1 or 2: ").strip()
 
     try:
+        if choice == "1":
+            dna = input("Enter a DNA sequence: ")
+
+        elif choice == "2":
+            file_path = input(
+                "Enter the path to the DNA text file: "
+            ).strip()
+            dna = Path(file_path).read_text(encoding="utf-8")
+
+        else:
+            print("Error: Please choose 1 or 2.")
+            return
+
         results = analyze_dna(dna)
 
         print("\n--- DNA Sequence Analysis ---")
@@ -56,6 +75,8 @@ def main():
 
     except ValueError as error:
         print("Error:", error)
+    except OSError:
+        print("Error: Could not read the file. Check the file path.")
 
 
 if __name__ == "__main__":
