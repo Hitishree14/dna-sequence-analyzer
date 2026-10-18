@@ -1,0 +1,46 @@
+
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+
+
+PROJECT_FOLDER = Path(__file__).resolve().parents[1]
+PROGRAM = PROJECT_FOLDER / "dna_analyzer.py"
+
+
+class TestDNAAnalyzer(unittest.TestCase):
+
+    def test_valid_dna_sequence(self):
+        result = subprocess.run(
+            [sys.executable, str(PROGRAM)],
+            input="ATGCGTAA\n",
+            capture_output=True,
+            text=True
+        )
+
+        self.assertIn("Sequence length: 8", result.stdout)
+        self.assertIn("A count: 3", result.stdout)
+        self.assertIn("T count: 2", result.stdout)
+        self.assertIn("G count: 2", result.stdout)
+        self.assertIn("C count: 1", result.stdout)
+        self.assertIn("GC content: 37.50%", result.stdout)
+        self.assertIn("RNA sequence: AUGCGUAA", result.stdout)
+        self.assertIn(
+            "Reverse complement: TTACGCAT",
+            result.stdout
+        )
+
+    def test_invalid_dna_sequence(self):
+        result = subprocess.run(
+            [sys.executable, str(PROGRAM)],
+            input="ATGX123\n",
+            capture_output=True,
+            text=True
+        )
+
+        self.assertIn("Invalid DNA sequence", result.stdout)
+
+
+if __name__ == "__main__":
+    unittest.main()
